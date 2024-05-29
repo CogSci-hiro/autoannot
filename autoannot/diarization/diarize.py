@@ -103,7 +103,7 @@ def _combine(sppas_file: str | Path, pyannote_file: str | Path, out_file: str | 
 
         cursor = end
 
-    df = pd.DataFrame({"tiers": tier_list, "start": start_list, "end": end_list, "annotation": annotation_list})
+    df = pd.DataFrame({"tier": tier_list, "start": start_list, "end": end_list, "annotation": annotation_list})
     df = df[df["start"] + min_duration < df["end"]]
     df = fill_missing(df, target=None)
     df = _merge_rows(df)
@@ -117,11 +117,11 @@ def _merge_rows(df: pd.DataFrame) -> pd.DataFrame:
     if not len(df):
         return df
 
-    tier_name = df.iloc[0]["tiers"]
+    tier_name = df.iloc[0]["tier"]
     current_annotation = None
     last_start = 0.0
 
-    result = {"tiers": [], "start": [], "end": [], "annotation": []}
+    result = {"tier": [], "start": [], "end": [], "annotation": []}
 
     for _, row in df.iterrows():
 
@@ -133,7 +133,7 @@ def _merge_rows(df: pd.DataFrame) -> pd.DataFrame:
         if current_annotation == row["annotation"]:
             continue
 
-        result["tiers"].append(tier_name)
+        result["tier"].append(tier_name)
         result["start"].append(last_start)
         result["end"].append(row["start"])
         result["annotation"].append(current_annotation)
@@ -142,7 +142,7 @@ def _merge_rows(df: pd.DataFrame) -> pd.DataFrame:
         last_start = row["start"]
 
     # The last one
-    result["tiers"].append(tier_name)
+    result["tier"].append(tier_name)
     result["start"].append(df.iloc[-1]["start"])
     result["end"].append(df.iloc[-1]["end"])
     result["annotation"].append(df.iloc[-1]["annotation"])

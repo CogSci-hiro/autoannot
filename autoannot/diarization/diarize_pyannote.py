@@ -76,7 +76,7 @@ def get_main_speaker(diarization_file: str | Path, wav_file: str | Path,
 
 def _convert_to_df(diarization: str, tier_name: str = "pyannote"):
 
-    results = {"tiers": [], "start": [], "end": [], "annotation": []}
+    results = {"tier": [], "start": [], "end": [], "annotation": []}
 
     for line in diarization.splitlines():
 
@@ -100,7 +100,7 @@ def _convert_to_df(diarization: str, tier_name: str = "pyannote"):
         start = start_hour * 3600 + start_min * 60 + start_sec
         end = end_hour * 3600 + end_min * 60 + end_sec
 
-        results["tiers"].append(tier_name)
+        results["tier"].append(tier_name)
         results["start"].append(start)
         results["end"].append(end)
         results["annotation"].append(speaker)
