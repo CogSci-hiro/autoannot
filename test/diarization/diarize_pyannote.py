@@ -10,7 +10,7 @@ from autoannot.diarization.diarize_pyannote import diarize_pyannote, get_main_sp
 
 TEST_WAV_FILE = ROOT_DIR / "data" / "test" / "wav_dir" / "AB-buzz.wav"
 TEST_PARAMETERS_FILE = ROOT_DIR / "data" / "parameters.json"
-TEST_ANNOT_FILE = ROOT_DIR / "data" / "test" / "dst_dir" / "AB-buzz.csv"
+TEST_ANNOT_FILE = ROOT_DIR / "data" / "test" / "dst_dir" / "diarization" / "AB-buzz.csv"
 
 
 class DiarizePyannote(unittest.TestCase):
