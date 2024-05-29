@@ -13,7 +13,7 @@ from autoannot.diarization import PYANNOT_MODEL
 from autoannot.utils.annotations import fill_missing
 
 
-def diarize_pyannote(in_file: str | Path, out_file: str | Path, n_speakers: int,
+def diarize_pyannote(in_file: str | Path, out_file: str | Path,  max_speakers: None | int,
                      auth_token: str, use_cuda: bool = True) -> None:
 
     # Load pretrained model
@@ -24,10 +24,10 @@ def diarize_pyannote(in_file: str | Path, out_file: str | Path, n_speakers: int,
         pipeline.to(torch.device("cuda"))
 
     # Set maximum number of speakers
-    n_speakers = 10 if n_speakers is None else n_speakers
+    max_speakers = 10 if max_speakers is None else max_speakers
 
     # Annotate
-    diarization = pipeline(in_file, max_speakers=n_speakers)
+    diarization = pipeline(in_file, max_speakers=max_speakers)
 
     # Convert to familiar dataframe
     dia_df = _convert_to_df(str(diarization))
