@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 from typing import Dict
 import warnings
@@ -40,9 +39,3 @@ def _convert_to_dataframe(transcription: Dict) -> pd.DataFrame:
 
     results = pd.DataFrame(results)
     return results
-
-
-if __name__ == "__main__":
-    transcribe_whisper("/Users/hiro/data/nat_eeg/stimuli/audio01.wav",
-                       "/Users/hiro/PycharmProjects/autoannot/workspace/trans.csv",
-                       model="tiny", use_cuda=False)
