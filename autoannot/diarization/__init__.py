@@ -7,4 +7,4 @@ MIN_MEAN_DURATION = 60
 MIN_N_IPUS = 10
 
 # Pyannote details
-PYANNOT_MODEL = "pyannote/speaker-diarization@2.1"
+PYANNOT_MODEL = "pyannote/speaker-diarization-3.0"
