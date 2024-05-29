@@ -9,7 +9,7 @@ import torch
 import pandas as pd
 from pyannote.audio import Pipeline
 
-from autoannot.diarization import PYANNOT_MODEL
+from . import PYANNOT_MODEL
 from autoannot.utils.annotations import fill_missing
 
 
