@@ -4,7 +4,7 @@ import pandas as pd
 def fill_missing(df: pd.DataFrame, target: None | str,
                  fill_symbol: str = "#", min_duration: float = 0.01) -> pd.DataFrame:
 
-    result = {"tiers": [], "start": [], "end": [], "annotation": []}
+    result = {"tier": [], "start": [], "end": [], "annotation": []}
     last_end = 0.0
 
     for _, row in df.iterrows():
@@ -16,13 +16,13 @@ def fill_missing(df: pd.DataFrame, target: None | str,
         if row["start"] > last_end + min_duration:
 
             # Add silence
-            result["tiers"].append(row["tiers"])
+            result["tier"].append(row["tier"])
             result["start"].append(last_end)
             result["end"].append(row["start"])
             result["annotation"].append(fill_symbol)
 
         # Add annotation
-        result["tiers"].append(row["tiers"])
+        result["tier"].append(row["tier"])
         result["start"].append(row["start"])
         result["end"].append(row["end"])
         result["annotation"].append(row["annotation"])
@@ -31,6 +31,6 @@ def fill_missing(df: pd.DataFrame, target: None | str,
         last_end = row["end"]
 
     if len(df[df["end"] < df["start"]]) > 0:
-        raise ValueError("")
+        raise ValueError("end is before start")
 
     return pd.DataFrame(result)
