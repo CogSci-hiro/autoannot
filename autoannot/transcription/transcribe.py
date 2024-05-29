@@ -8,6 +8,6 @@ def transcribe(in_file: str | Path, out_file: str | Path, params: Dict):
 
     backend = params["transcription"]["backend"]
     if backend == "whisper":
-        transcribe_whisper(in_file, out_file, **params["transcribe"]["whisper"])
+        transcribe_whisper(in_file, out_file, **params["transcription"]["whisper"])
     else:
         NotImplementedError(f"Backend '{backend}' is not implemented")
