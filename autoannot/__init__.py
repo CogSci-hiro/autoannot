@@ -13,3 +13,6 @@ with open(ROOT_DIR / "config.yaml") as stream:
 
 if not config["logging"]["sppas"]:
     logging.getLogger().disabled = True  # SPPAS logs to root by default
+
+# Add SPPAS path
+sys.path.append(str(ROOT_DIR / "libs" / "SPPAS"))
