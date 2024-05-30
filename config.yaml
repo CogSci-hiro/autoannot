@@ -1,3 +1,5 @@
+# Paths
+parameter_file: "path/to/JSON/file"
 
 # Logging
 logging:
