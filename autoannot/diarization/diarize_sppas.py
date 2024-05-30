@@ -1,13 +1,16 @@
 import os
 from pathlib import Path
-
+import sys
 
 import pandas as pd
 
-import autoannot  # noqa
-from sppas.src.annotations import sppasSearchIPUs  # noqa
-
+from autoannot.constants import ROOT_DIR
 from . import MIN_SIL, MIN_IPU, SHIFT_START, SHIFT_END, MIN_MEAN_DURATION, MIN_N_IPUS
+
+# Add SPPAS path
+sys.path.append(str(ROOT_DIR / "libs" / "SPPAS"))
+
+from sppas.src.annotations import sppasSearchIPUs  # noqa
 
 
 def diarize_sppas(in_file: str | Path, out_file: str | Path, error_log: str | Path,
