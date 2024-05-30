@@ -32,7 +32,8 @@ def align_transcription(diarization_file: str | Path, transcription_file: str | 
         elif mode == "partial":
 
             # Keep transcriptions partially overlapping
-            selection = trs_df[(row["start"] <= trs_df["start"]) | (trs_df["end"] <= trs_df["end"])]
+            selection = trs_df[((row["start"] <= trs_df["end"]) & (trs_df["end"] <= row["end"])) |
+                               ((row["start"] <= trs_df["start"]) & (trs_df["end"] <= row["end"]))]
 
         else:
             raise NotImplementedError(f"The 'mode' '{mode}' is not implemented")
