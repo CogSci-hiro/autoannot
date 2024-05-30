@@ -1,9 +1,14 @@
 import os
 from pathlib import Path
 import re
+import sys
 import tempfile
 
-from autoannot import ROOT_DIR
+from autoannot.constants import ROOT_DIR
+
+# Add SPPAS path
+sys.path.append(str(ROOT_DIR / "libs" / "SPPAS"))
+
 from sppas.src.annotations import sppasTextNorm  # noqa
 from sppas.src.annotations import sppasPhon      # noqa
 from sppas.src.annotations import sppasAlign     # noqa

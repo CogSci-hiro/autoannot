@@ -109,7 +109,7 @@ def _combine(sppas_file: str | Path, pyannote_file: str | Path, out_file: str | 
     df = _merge_rows(df)
 
     # Save
-    df.to_csv(out_file, index=False, header=False)
+    df.to_csv(out_file, index=False)
 
 
 def _merge_rows(df: pd.DataFrame) -> pd.DataFrame:

@@ -1,4 +1,5 @@
 librosa
+joblib
 pandas~=2.2.2
 pyannote.audio~=3.0
 torch~=2.3.0
@@ -9,3 +10,4 @@ PyYAML~=6.0.1
 setuptools~=68.2.0
 soundfile
 speechbrain
+whisper-timestamped

@@ -23,3 +23,22 @@ def get_wav_paths(dir_name: str | Path) -> List[Path]:
     path_list.sort()
 
     return path_list
+
+
+def get_path_list(dst_dir: Path, wav_list: List[Path], extension: str,
+                  prefix: None | str = None, suffix: None | str = None):
+
+    path_list = []
+    for wav_path in wav_list:
+
+        fname = os.path.basename(wav_path)
+        stem, _ = os.path.splitext(fname)
+
+        # Add nothing if None or add prefix/suffix + "_"
+        prefix = "" if prefix is None else f"{prefix}_"
+        suffix = "" if suffix is None else f"_{suffix}"
+
+        path = dst_dir / f"{prefix}{stem}{suffix}.{extension}"
+        path_list.append(path)
+
+    return path_list
