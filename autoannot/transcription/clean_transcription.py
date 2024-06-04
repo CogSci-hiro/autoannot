@@ -1,18 +1,23 @@
-from pathlib import Path
 import re
 
 import pandas as pd
 
 
-def clean_transcription(in_file: str | Path, out_file: str | Path, empty: str = "noise") -> None:
-
-    df = pd.read_csv(in_file)
+def clean_transcription(df: pd.DataFrame, empty: str = "noise") -> pd.DataFrame:
 
     results = {"tier": [], "start": [], "end": [], "annotation": []}
     for _, row in df.iterrows():
 
+        text = row["annotation"]
+        if isinstance(text, float):  # NaN
+            text = ""
+        elif isinstance(text, str):
+            text = text
+        else:
+            raise TypeError(f"Invalid type '{type(text)}' for text")
+
         # Cleaning nonsense
-        text = _remove_subtitles(row["annotation"])
+        text = _remove_subtitles(text)
         text = _normalize_spaces(text)
         text = _remove_miscellaneous(text)
 
@@ -38,7 +43,7 @@ def clean_transcription(in_file: str | Path, out_file: str | Path, empty: str = 
         results["annotation"].append(text)
 
     df = pd.DataFrame(results)
-    df.to_csv(out_file)
+    return df
 
 
 ########################################################################################################################
