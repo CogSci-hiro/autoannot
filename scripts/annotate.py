@@ -4,7 +4,52 @@ from typing import Dict
 
 from joblib import Parallel, delayed
 
-from autoannot import diarize, transcribe, align, clean_transcription, align_transcription, get_wav_paths, get_path_list
+from autoannot import diarize, transcribe, align, get_wav_paths, get_path_list
+
+
+def annotate(params: Dict):
+
+    # Parameters
+    n_jobs = params["n_jobs"]
+    use_existing = params["use_existing"]
+    target = params["target"]
+
+    # Paths
+    src_dir = Path(params["paths"]["src_dir"])
+    dst_dir = Path(params["paths"]["dst_dir"])
+
+    # Get WAV paths
+    wav_list = get_wav_paths(src_dir)
+
+    # Diarize
+    if _make_diarization(dst_dir, wav_list, use_existing):
+        dia_dir = _make_dirs(dst_dir, "diarizations")
+        log_dir = _make_dirs(dst_dir, "error_logs")
+
+        dia_list = get_path_list(dia_dir, wav_list, extension="csv", suffix="diarization")
+        log_list = get_path_list(log_dir, wav_list, extension="log", suffix="error")
+
+        Parallel(n_jobs=n_jobs)(delayed(diarize)(w, o, l, params) for w, o, l in zip(wav_list, dia_list, log_list))
+
+    # Transcribe
+    if _make_transcription(dst_dir, wav_list, use_existing, target):
+
+        trs_dir = _make_dirs(dst_dir, "transcriptions")
+        trs_list = get_path_list(trs_dir, wav_list, extension="csv", suffix="transcription")
+        dia_dir = _make_dirs(dst_dir, "diarizations")
+        dia_list = get_path_list(dia_dir, wav_list, extension="csv", suffix="diarization")
+
+        Parallel(n_jobs=n_jobs)(delayed(transcribe)(w, t, d, params) for w, t, d in zip(wav_list, trs_list, dia_list))
+
+    # Align
+    if _make_alignment(dst_dir, wav_list, use_existing, target):
+
+        align_dir = _make_dirs(dst_dir, "aligned_transcriptions")
+        align_list = get_path_list(align_dir, wav_list, extension="csv", suffix="aligned")
+        palign_dir = _make_dirs(dst_dir, "palign_transcriptions")
+        palign_list = get_path_list(palign_dir, wav_list, extension="TextGrid", suffix="palign")
+
+        Parallel(n_jobs=n_jobs)(delayed(align)(w, p, a, params) for w, p, a in zip(wav_list, palign_list, align_list))
 
 
 def _make_dirs(dst_dir: Path, name: str):
@@ -16,46 +61,59 @@ def _make_dirs(dst_dir: Path, name: str):
     return sub_dir
 
 
-def annotate(params: Dict):
+def _make_diarization(dst_dir, wav_list, use_existing):
 
-    # n_jobs
-    n_jobs = params["n_jobs"]
+    if use_existing:
+        dia_dir = _make_dirs(dst_dir, "diarizations")
+        dia_list = get_path_list(dia_dir, wav_list, extension="csv", suffix="diarization")
 
-    # Paths
-    src_dir = Path(params["paths"]["src_dir"])
-    dst_dir = Path(params["paths"]["dst_dir"])
+        for dia_path in dia_list:
 
-    # Get WAV paths
-    wav_list = get_wav_paths(src_dir)
+            if not dia_path.exists():
+                return True
+        return False
 
-    # Diarize
-    dia_dir = _make_dirs(dst_dir, "diarizations")
-    log_dir = _make_dirs(dst_dir, "error_logs")
+    else:
+        return True
 
-    dia_list = get_path_list(dia_dir, wav_list, extension="csv", suffix="diarization")
-    log_list = get_path_list(log_dir, wav_list, extension="log", suffix="error")
-    Parallel(n_jobs=n_jobs)(delayed(diarize)(w, o, l, params) for w, o, l in zip(wav_list, dia_list, log_list))
 
-    # Transcribe
-    trs_dir = _make_dirs(dst_dir, "transcriptions")
-    trs_list = get_path_list(trs_dir, wav_list, extension="csv", suffix="transcription")
-    Parallel(n_jobs=n_jobs)(delayed(transcribe)(w, t, params) for w, t in zip(wav_list, trs_list))
+def _make_transcription(dst_dir, wav_list, use_existing, target):
 
-    # Clean the transcription
-    clean_dir = _make_dirs(dst_dir, "clean_transcriptions")
-    clean_list = get_path_list(clean_dir, wav_list, extension="csv", suffix="clean")
-    Parallel(n_jobs=n_jobs)(delayed(clean_transcription)(t, c) for t, c in zip(trs_list, clean_list))
+    if target not in ["transcription", "alignment"]:
+        return False
 
-    # Align with diarization file
-    align_dir = _make_dirs(dst_dir, "aligned_transcriptions")
-    align_list = get_path_list(align_dir, wav_list, extension="csv", suffix="aligned")
-    Parallel(n_jobs=n_jobs)(delayed(align_transcription)(d, c, a, mode=params["transcription"]["mode"])
-                            for d, c, a in zip(dia_list, clean_list, align_list))
+    if use_existing:
+        trs_dir = _make_dirs(dst_dir, "transcriptions")
+        trs_list = get_path_list(trs_dir, wav_list, extension="csv", suffix="transcription")
 
-    # Align
-    palign_dir = _make_dirs(dst_dir, "palign_transcriptions")
-    palign_list = get_path_list(palign_dir, wav_list, extension="TextGrid", suffix="palign")
-    Parallel(n_jobs=n_jobs)(delayed(align)(w, p, a, params) for w, p, a in zip(wav_list, palign_list, align_list))
+        for trs_path in trs_list:
+
+            if not trs_path.exists():
+                return True
+        return False
+
+    else:
+        return True
+
+
+def _make_alignment(dst_dir, wav_list, use_existing, target):
+
+    if target != "alignment":
+        return False
+
+    if use_existing:
+
+        palign_dir = _make_dirs(dst_dir, "palign_transcriptions")
+        palign_list = get_path_list(palign_dir, wav_list, extension="TextGrid", suffix="palign")
+
+        for palign_list in palign_list:
+
+            if not palign_list.exists():
+                return True
+        return False
+
+    else:
+        return True
 
 
 if __name__ == "__main__":
