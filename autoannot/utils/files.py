@@ -21,6 +21,9 @@ def get_wav_paths(dir_name: str | Path) -> List[Path]:
     dir_name = Path(dir_name)
     for file in os.listdir(dir_name):
 
+        if file.startswith("."):
+            continue
+
         if re.match(r".*(wav|WAV)", file):
             path_list.append(dir_name / file)
 
