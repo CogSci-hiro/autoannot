@@ -4,7 +4,7 @@ import re
 import pandas as pd
 
 
-def clean_transcription(in_file: str | Path, out_file: str | Path) -> None:
+def clean_transcription(in_file: str | Path, out_file: str | Path, empty: str = "noise") -> None:
 
     df = pd.read_csv(in_file)
 
@@ -24,6 +24,13 @@ def clean_transcription(in_file: str | Path, out_file: str | Path) -> None:
         text = _normalize_cardinals(text)
         text = _normalize_symbols(text)
         text = _normalize_dashes(text)
+
+        # Handle empty segment
+        if text == "" or text is None:
+            if empty == "noise":  # treat the empty segment as unrecognized noise
+                text = "*"
+            else:
+                raise NotImplementedError(f"'empty' == '{empty}' is not implemented")
 
         results["tier"].append(row["tier"])
         results["start"].append(row["start"])
