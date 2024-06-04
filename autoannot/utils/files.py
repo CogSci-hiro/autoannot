@@ -1,7 +1,18 @@
 import os
 from pathlib import Path
 import re
+import sys
+import tempfile
 from typing import List
+
+import pandas as pd
+
+from autoannot.constants import ROOT_DIR
+
+# Add SPPAS path
+sys.path.append(str(ROOT_DIR / "libs" / "SPPAS"))
+
+from sppas.src.anndata import sppasTrsRW  # noqa
 
 
 def get_wav_paths(dir_name: str | Path) -> List[Path]:
@@ -42,3 +53,22 @@ def get_path_list(dst_dir: Path, wav_list: List[Path], extension: str,
         path_list.append(path)
 
     return path_list
+
+
+def convert_annotation(in_file: str | Path, out_file: str | Path) -> None:
+
+    # SPPAS conversion
+    parser = sppasTrsRW(str(in_file))
+    trs = parser.read()
+    parser.set_filename(str(out_file))
+    parser.write(trs)
+
+
+def to_textgrid(out_file: str | Path, df: pd.DataFrame) -> None:
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+
+        temp_dir = Path(temp_dir)
+        df.to_csv(temp_dir / "annotation.csv", header=False)
+
+        convert_annotation(temp_dir / "annotation.csv", out_file)
