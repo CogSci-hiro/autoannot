@@ -1,4 +1,3 @@
-librosa
 joblib
 pandas~=2.2.2
 pyannote.audio~=3.0
@@ -7,6 +6,7 @@ numpy~=1.26.4
 onnxruntime
 openai-whisper
 PyYAML~=6.0.1
+scipy
 setuptools~=68.2.0
 soundfile
 speechbrain
