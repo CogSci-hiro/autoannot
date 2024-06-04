@@ -13,8 +13,8 @@ import whisper_timestamped
 warnings.filterwarnings(action="ignore", category=UserWarning)
 
 
-def transcribe_whisper(in_file: str | Path, out_file: str | Path, dia_file: str | Path,
-                       model: str, use_cuda: bool, condition_on_previous_text: bool = True):
+def transcribe_whisper(in_file: str | Path, dia_file: str | Path,
+                       model: str, use_cuda: bool, condition_on_previous_text: bool = True) -> pd.DataFrame:
 
     # Make cropped audio file
     temp_audio, ipu_df, dia_df = _make_cropped(in_file, dia_file)
@@ -36,10 +36,11 @@ def transcribe_whisper(in_file: str | Path, out_file: str | Path, dia_file: str 
 
     # Convert to standard format and save
     results = _convert_to_dataframe(results, ipu_df, dia_df)
-    results.to_csv(out_file, index=False)
 
     # Clean up
     temp_audio.close()
+
+    return results
 
 
 def _make_cropped(audio_file, dia_file):
