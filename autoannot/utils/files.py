@@ -49,10 +49,10 @@ def get_path_list(dst_dir: Path, wav_list: List[Path], extension: str,
         stem, _ = os.path.splitext(fname)
 
         # Add nothing if None or add prefix/suffix + "_"
-        prefix = "" if prefix is None else f"{prefix}_"
-        suffix = "" if suffix is None else f"_{suffix}"
+        prefix_ = "" if prefix is None else f"{prefix}_"
+        suffix_ = "" if suffix is None else f"_{suffix}"
 
-        path = dst_dir / f"{prefix}{stem}{suffix}.{extension}"
+        path = dst_dir / f"{prefix_}{stem}{suffix_}.{extension}"
         path_list.append(path)
 
     return path_list
