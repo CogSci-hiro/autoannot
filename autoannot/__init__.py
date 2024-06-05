@@ -9,7 +9,7 @@ from .constants import ROOT_DIR
 from .diarization.diarize import diarize
 from .transcription.transcribe import transcribe
 from .transcription.clean_transcription import clean_transcription
-from .utils.files import get_path_list, get_wav_paths
+from .utils.files import get_path_list, get_wav_paths, convert_annotation, to_textgrid
 
 __version__ = "0.0.0"
 
@@ -23,5 +23,5 @@ if not config["logging"]["sppas"]:
 # Add SPPAS path
 sys.path.append(str(ROOT_DIR / "libs" / "SPPAS"))
 
-__all__ = ["align", "diarize", "transcribe", "clean_transcription",
+__all__ = ["align", "diarize", "transcribe", "clean_transcription", "convert_annotation", "to_textgrid",
            "get_path_list", "get_wav_paths", "ROOT_DIR"]
