@@ -1,0 +1,61 @@
+{
+  "n_jobs": 16,
+  "target": "transcription",
+  "extension": "TextGrid",
+  "use_existing": true,
+  "paths":
+  {
+    "src_dir": "/Users/hiro/Desktop/maude_test_src",
+    "dst_dir": "/Users/hiro/Desktop/maude_test_dst"
+  },
+  "diarization":
+  {
+    "backend": "combined",
+    "sppas":
+    {
+      "min_sil": null,
+      "min_ipu": null,
+      "shift_start": null,
+      "shift_end": null,
+      "min_n_ipus": null,
+      "min_mean_duration": null,
+      "rms": null,
+      "manual_thresholds": null
+    },
+    "pyannote":
+    {
+      "auth_token": "",
+      "use_cuda": false,
+      "max_speakers": 10
+    },
+    "combined":
+    {
+      "tier_name": "combined",
+      "min_duration": 0.0
+    }
+  },
+  "transcription":
+  {
+    "backend": "whisper",
+    "empty": "noise",
+    "mode": "partial",
+    "whisper":
+    {
+      "model": "tiny",
+      "use_cuda": true
+    },
+    "wav2vec2":
+    {
+      "model": "facebook/mms-1b-all",
+      "use_cuda": false
+    }
+  },
+  "alignment":
+  {
+    "backend": "julius"
+  },
+  "advanced":
+  {
+    "sppas_log": false
+  }
+}
