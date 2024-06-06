@@ -148,14 +148,3 @@ def _merge_rows(df: pd.DataFrame) -> pd.DataFrame:
     result["annotation"].append(df.iloc[-1]["annotation"])
 
     return pd.DataFrame(result)
-
-
-if __name__ == "__main__":
-    import json
-    with open("/Users/hiro/PycharmProjects/autoannot/data/parameters.json", "r") as f:
-        params = json.load(f)
-
-    path = "/Users/hiro/PycharmProjects/autoannot/data/test/wav_dir/AB-buzz.wav"
-    path2 = "/Users/hiro/PycharmProjects/autoannot/workspace/annot.csv"
-    path3 = "/Users/hiro/PycharmProjects/autoannot/workspace/annot.log"
-    diarize(path, path2, path3, params)
