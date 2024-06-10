@@ -66,15 +66,32 @@ Transcription relies on Transformer based models provided by [Hugging Face](http
 language can be transcribed depends on the model chosen as the backend
 
 #### Whisper-based models
-TODO
+
+##### Distilled French Whisper (v3 large)
+[Distilled version of **French** Whisper](https://huggingface.co/bofenghuang/whisper-large-v3-french-distil-dec2), 
+only 756M parameters
+
+model-name: `bofenghuang/whisper-large-v3-french-distil-dec2"`
 
 #### Wav2Vec2-based models
-TODO
+
+##### Massively Multilingual Speech (MMS)
+
+[MMS](https://huggingface.co/facebook/mms-1b-all) supports 1000+ languages
+
+model name: `facebook/mms-1b-all`
 
 ### Forced Alignment
 Currently this step uses [SPPAS](https://sppas.org/) wrapper for 
 [Julius](https://www.sp.nitech.ac.jp/~ri/julius-dev/doxygen/julius/4.0/en/index.html) and for the time being
 **only French language** is supported
+
+
+## Support
+
+The toolkit was tested on:
+
+* MacOS Sonoma 14.4.1
 
 ## Citations
 
