@@ -1,5 +1,5 @@
 # Paths
-parameter_file: "path/to/JSON/file"
+parameter_file: "/Users/hiro/PycharmProjects/autoannot/data/parameters.json"
 
 # Logging
 logging:
