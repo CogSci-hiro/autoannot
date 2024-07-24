@@ -58,6 +58,9 @@ graph LR
 
 ## Supported Languages
 
+Currently **only French** is supported in full. But the toolkit can still be used for other languages up to certain
+stages in the pipeline
+
 ### Diarization
 The diarization process is fully **language independent** thus can be used with any languages
 
