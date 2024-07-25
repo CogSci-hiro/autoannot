@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List, Tuple
 
 import librosa
 import numpy as np
@@ -6,11 +7,27 @@ import pandas as pd
 import torch
 from transformers import Wav2Vec2ForCTC, AutoProcessor
 
+from autoannot.docs import fill_doc
+
 SR_RATE = 16_000
 
 
-def transcribe_w2v2(in_file: str | Path, dia_file: str | Path,
-                    model: str, use_cuda: bool) -> pd.DataFrame:
+@fill_doc
+def transcribe_wav2vec2(in_file: str | Path, dia_file: str | Path,
+                        model: str, use_cuda: bool) -> pd.DataFrame:
+    """
+
+    Parameters
+    ----------
+    %(in_file)
+    %(dia_file)s
+    %(model)s
+    %(use_cuda)s
+
+    Returns
+    -------
+    %(df)s
+    """
 
     data_list, dia_df = _make_cropped(in_file, dia_file)
 
@@ -56,7 +73,20 @@ def transcribe_w2v2(in_file: str | Path, dia_file: str | Path,
     return df
 
 
-def _make_cropped(audio_file, dia_file):
+@fill_doc
+def _make_cropped(audio_file: str | Path, dia_file: str | Path) -> Tuple[List[np.array], pd.DataFrame]:
+    """
+
+    Parameters
+    ----------
+    %(audio_file)s
+    %(dia_file)s
+
+    Returns
+    -------
+    %(data_list)s
+    %(df)s
+    """
 
     data, sr = librosa.load(audio_file, sr=SR_RATE)
     if data.shape[0] == 2:  # stereo data
