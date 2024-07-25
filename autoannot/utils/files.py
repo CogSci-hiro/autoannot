@@ -73,6 +73,18 @@ def convert_annotation(in_file: str | Path, out_file: str | Path) -> None:
 
 @fill_doc
 def to_textgrid(out_file: str | Path, df: pd.DataFrame) -> None:
+    """
+    Save ``df`` to TextGrid format
+
+    Parameters
+    ----------
+    %(out_file)s
+    %(df)s
+
+    Returns
+    -------
+    None
+    """
 
     with tempfile.TemporaryDirectory() as temp_dir:
 
