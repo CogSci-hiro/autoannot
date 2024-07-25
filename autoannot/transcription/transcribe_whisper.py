@@ -27,8 +27,8 @@ def transcribe_whisper(in_file: str | Path, dia_file: str | Path,
     %(dia_file)s
     %(model)s
     %(use_cuda)s
-    condition_on_previous_text
-
+    condition_on_previous_text : bool
+        if ``True``, use previous information
     Returns
     -------
     %(df)s
@@ -65,6 +65,7 @@ def transcribe_whisper(in_file: str | Path, dia_file: str | Path,
 def _make_cropped(audio_file: str | Path,
                   dia_file: str | Path) -> Tuple[tempfile.NamedTemporaryFile, pd.DataFrame, pd.DataFrame]:
     """
+    Make cropped version of the audio
 
     Parameters
     ----------
@@ -120,6 +121,7 @@ def _make_cropped(audio_file: str | Path,
 def _convert_to_dataframe(transcription, ipu_df: pd.DataFrame, dia_df: pd.DataFrame,
                           partial_overlap: str = "ignore") -> pd.DataFrame:
     """
+    Convert the output to DataFrame
 
     Parameters
     ----------
