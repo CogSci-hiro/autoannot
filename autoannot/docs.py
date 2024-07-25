@@ -1,4 +1,5 @@
 import re
+from typing import Callable
 
 DOC_DICT = {}
 
@@ -118,7 +119,20 @@ DOC_DICT["wav_list"] = "wav_list : List[Path]\n\t\t"
 # Z
 
 
-def fill_doc(func):
+def fill_doc(func: Callable) -> Callable:
+    """
+    Replace various repeated docstrings in the format of ``\"%(...)s\"`` with appropriate text
+
+    Parameters
+    ----------
+    func : Callable
+        method whose docstring is to be replaced
+
+    Returns
+    -------
+    func : Callable
+        method whose docstring is to be replaced
+    """
 
     docs = func.__doc__
 
