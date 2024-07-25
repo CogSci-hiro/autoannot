@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
 import pandas as pd
-from pyannote.audio import Pipeline
+from pyannote.audio import Pipeline  # noqa
 
 from ..diarization import PYANNOT_MODEL
 from autoannot.docs import fill_doc
@@ -12,6 +12,19 @@ from autoannot.docs import fill_doc
 @fill_doc
 def fill_missing(df: pd.DataFrame, target: None | str,
                  fill_symbol: str = "#", min_duration: float = 0.01) -> pd.DataFrame:
+    """
+    TODO
+    Parameters
+    ----------
+    %(df)s
+    %(target)s
+    %(fill_symbol)s
+    %(min_duration)s
+
+    Returns
+    -------
+    %(df)s
+    """
 
     result = {"tier": [], "start": [], "end": [], "annotation": []}
     last_end = 0.0
@@ -48,6 +61,7 @@ def fill_missing(df: pd.DataFrame, target: None | str,
 @fill_doc
 def check_parameters(params: Dict) -> None:
     """
+    Check the validity of the contents of ``params`` before running the pipeline
 
     Parameters
     ----------
@@ -88,14 +102,41 @@ def check_parameters(params: Dict) -> None:
 ########################################################################################################################
 
 
-def _check_keys(params, keys):
+@fill_doc
+def _check_keys(params: dict, keys: List[str]) -> None:
+    """
+    Make sure that all elements of ``keys`` are in ``params``
+
+    Parameters
+    ----------
+    %(params)s
+    keys : List[str]
+        List of strings that needs to be in ``params``
+
+    Returns
+    -------
+    None
+    """
 
     for key in keys:
         if key not in params.keys():
             raise KeyError(f"'{key}' is required in the parameter JSON")
 
 
-def _check_extension(extension, target):
+def _check_extension(extension: str, target: str) -> None:
+    """
+    Make sure that ``extension`` provided are compatible with ``target``
+
+    Parameters
+    ----------
+    extension : str
+        extension of the output file, either ``\"csv\"``, ``\"CSV\"``, ``\"textgrid\"`` or ``\"TextGrid\"``
+    target : str
+        target output specified, either ``\"diarization\"``, ``\"transcription\"`` or ``\"alignment\"``
+    Returns
+    -------
+    None
+    """
 
     if target == "diarization":
         if extension not in ["csv", "CSV", "textgrid", "TextGrid"]:
@@ -105,12 +146,27 @@ def _check_extension(extension, target):
         if extension not in ["csv", "CSV", "textgrid", "TextGrid"]:
             raise ValueError(f"'extension' == '{extension}' is not valid for 'target' == '{target}'")
 
-    if target == "alignment":
+    elif target == "alignment":
         if extension not in ["textgrid", "TextGrid"]:
             raise ValueError(f"'extension' == '{extension}' is not valid for 'target' == '{target}'")
 
+    else:
+        raise ValueError(f"'target' == '{target}' is not valid")
 
-def _check_paths(paths):
+
+def _check_paths(paths: dict) -> None:
+    """
+    Check if the paths ``src_dir`` and ``dst_dir`` are provided and are valid
+
+    Parameters
+    ----------
+    paths : dict
+        dictionary containing paths
+
+    Returns
+    -------
+    None
+    """
 
     _check_keys(paths, ["src_dir", "dst_dir"])
 
@@ -125,11 +181,22 @@ def _check_paths(paths):
     if not src_dir.exists():
         raise FileNotFoundError(f"'src_dir' == '{src_dir}' does not exist")
 
-    if dst_dir.exists():
-        os.makedirs(dst_dir)
+    os.makedirs(dst_dir, exist_ok=True)
 
 
-def _check_diarization(diarization):
+def _check_diarization(diarization: dict) -> None:
+    """
+    Check validity of diarization parameters
+
+    Parameters
+    ----------
+    diarization : dict
+        diarization parameters
+
+    Returns
+    -------
+    None
+    """
 
     _check_keys(diarization, ["backend"])
 
@@ -150,12 +217,25 @@ def _check_diarization(diarization):
         raise NotImplementedError(f"'backend' == '{backend}' is not implemented")
 
 
-def _check_sppas(sppas):
+def _check_sppas(sppas: dict) -> None:
+    """
+    Check the validity of SPPAS parameters
+
+    Parameters
+    ----------
+    sppas : dict
+        SPPAS parameter dictionary
+
+    Returns
+    -------
+    None
+    """
 
     _check_keys(sppas, ["min_sil", "min_ipu", "shift_start", "shift_end", "min_n_ipus", "min_mean_duration",
                         "rms", "manual_thresholds"])
 
     def _check_type(var, name):
+        """Make sure these variables are either float or int"""
         if not isinstance(var, float) or not isinstance(var, int) or var is not None:
             raise TypeError(f"'{name}' must be either 'float', 'int' or 'None'")
 
@@ -169,7 +249,20 @@ def _check_sppas(sppas):
     _check_type(sppas["manual_thresholds"], "manual_thresholds")
 
 
-def _check_pyannote(pyannote):
+def _check_pyannote(pyannote: dict) -> None:
+    """
+    Check validity of Pyannote parameters
+
+    Parameters
+    ----------
+    pyannote : dict
+        Pyannote parameter dictionary
+
+    Returns
+    -------
+    None
+    """
+
     _check_keys(pyannote, ["auth_token", "use_cuda", "max_speakers"])
 
     auth_token = pyannote["auth_token"]
@@ -188,7 +281,19 @@ def _check_pyannote(pyannote):
         raise TypeError(f"'max_speakers' must be an 'int' or 'None'")
 
 
-def _check_combined(combined):
+def _check_combined(combined: dict) -> None:
+    """
+    Check the validity of combined diarization parameters
+
+    Parameters
+    ----------
+    combined : dict
+        Combined diarization parameters
+
+    Returns
+    -------
+    None
+    """
 
     _check_keys(combined, ["combined", "min_duration"])
 
@@ -199,7 +304,19 @@ def _check_combined(combined):
         raise TypeError(f"'min_duration' must be a 'float'")
 
 
-def _check_transcription(transcription):
+def _check_transcription(transcription: dict) -> None:
+    """
+    Check the validity of transcription parameters
+
+    Parameters
+    ----------
+    transcription : dict
+        Transcription parameters
+
+    Returns
+    -------
+    None
+    """
 
     _check_keys(transcription, ["backend"])
 
@@ -213,9 +330,32 @@ def _check_transcription(transcription):
         raise NotImplementedError(f"'backend' == '{backend}' is not implemented")
 
 
-def _check_alignment(alignment):
+def _check_alignment(alignment: dict) -> None:
+    """
+    Check validity of alignment parameters
+
+    Parameters
+    ----------
+    alignment : dict
+        Alignment parameters
+
+    Returns
+    -------
+    None
+    """
     _check_keys(alignment, ["julius"])
 
 
-def _check_advanced(advanced):
+def _check_advanced(advanced: dict) -> None:
+    """
+    Check validity of miscellaneous parameters
+
+    Parameters
+    ----------
+    advanced : dict
+        Advanced parameters
+    Returns
+    -------
+    None
+    """
     _check_keys(advanced, ["sppas_log"])
