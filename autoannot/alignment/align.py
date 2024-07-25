@@ -9,6 +9,11 @@ from autoannot.docs import fill_doc
 def align(in_file: str | Path, out_file: str | Path, trs_file: str | Path, params: Dict) -> None:
     """
     Force-alignment to create phoneme level annotations
+    Perform forced alignment from transcription file and WAV file
+
+    Currently only SPPAS + Julius forced alignment is supported
+    (For more information, see https://sppas.org/workdemo.html#stepa5,
+    https://www.sp.nitech.ac.jp/~ri/julius-dev/doxygen/julius/4.0/en/index.html)
 
     Parameters
     ----------
