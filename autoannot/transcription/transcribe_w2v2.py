@@ -16,6 +16,7 @@ SR_RATE = 16_000
 def transcribe_wav2vec2(in_file: str | Path, dia_file: str | Path,
                         model: str, use_cuda: bool) -> pd.DataFrame:
     """
+    Transcribe with Wav2vec2
 
     Parameters
     ----------
@@ -74,8 +75,9 @@ def transcribe_wav2vec2(in_file: str | Path, dia_file: str | Path,
 
 
 @fill_doc
-def _make_cropped(audio_file: str | Path, dia_file: str | Path) -> Tuple[List[np.array], pd.DataFrame]:
+def _make_cropped(audio_file: str | Path, dia_file: str | Path) -> Tuple[List[np.ndarray], pd.DataFrame]:
     """
+    Make a cropped version of the autio file
 
     Parameters
     ----------
