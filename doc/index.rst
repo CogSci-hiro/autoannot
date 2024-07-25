@@ -18,3 +18,12 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. toctree::
+   :caption: API
+   :hidden:
+
+   api/alignment.rst
+   api/diarization.rst
+   api/transcription.rst
+   api/utils.rst
