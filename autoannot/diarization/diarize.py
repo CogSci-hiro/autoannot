@@ -8,9 +8,23 @@ import pandas as pd
 from autoannot.diarization.diarize_sppas import diarize_sppas
 from autoannot.diarization.diarize_pyannote import diarize_pyannote
 from autoannot.utils.annotations import fill_missing
+from autoannot.docs import fill_doc
 
 
+@fill_doc
 def diarize(in_file: str | Path, out_file: str | Path, log_file: None | str | Path, params: Dict) -> None:
+    """
+
+    Parameters
+    ----------
+    %(in_file)s
+    %(out_file)s
+    %(log_file)s
+    %(params)s
+    Returns
+    -------
+    None
+    """
 
     backend = params["diarization"]["backend"]
 
@@ -42,6 +56,7 @@ def _diarize_combined(in_file: str | Path, out_file: str | Path, log_file: str |
         _combine(temp_dir / "sppas.csv", temp_dir / "pyannote.csv", out_file, **kwargs["combined"])
 
 
+@fill_doc
 def _combine(sppas_file: str | Path, pyannote_file: str | Path, out_file: str | Path, tier_name: str = "combined",
              min_duration: float = 0.0) -> None:
 
@@ -112,6 +127,7 @@ def _combine(sppas_file: str | Path, pyannote_file: str | Path, out_file: str | 
     df.to_csv(out_file, index=False)
 
 
+@fill_doc
 def _merge_rows(df: pd.DataFrame) -> pd.DataFrame:
 
     if not len(df):
