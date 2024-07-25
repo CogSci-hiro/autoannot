@@ -75,6 +75,21 @@ def _diarize_combined(in_file: str | Path, out_file: str | Path, log_file: str |
 @fill_doc
 def _combine(sppas_file: str | Path, pyannote_file: str | Path, out_file: str | Path, tier_name: str = "combined",
              min_duration: float = 0.0) -> None:
+    """
+    Combine SPPAS and Pyannote diarization files
+
+    Parameters
+    ----------
+    %(sppas_file)s
+    %(pyannote_file)s
+    %(out_file)s
+    %(tier_name)s
+    %(min_duration)s
+
+    Returns
+    -------
+    None
+    """
 
     sppas_df = pd.read_csv(sppas_file, header=None, names=["tier", "start", "end", "annotation"])
     pyannote_df = pd.read_csv(pyannote_file)
