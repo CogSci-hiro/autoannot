@@ -14,6 +14,7 @@ from autoannot.docs import fill_doc
 @fill_doc
 def diarize(in_file: str | Path, out_file: str | Path, log_file: None | str | Path, params: Dict) -> None:
     """
+    Perform diarization on ``in_file``
 
     Parameters
     ----------
@@ -46,7 +47,22 @@ def diarize(in_file: str | Path, out_file: str | Path, log_file: None | str | Pa
 ########################################################################################################################
 
 
-def _diarize_combined(in_file: str | Path, out_file: str | Path, log_file: str | Path, **kwargs) -> None:
+@fill_doc
+def _diarize_combined(in_file: str | Path, out_file: str | Path, log_file: str | Path, **kwargs: dict) -> None:
+    """
+    Perform diarization combining SPPAS and Pyannote diariation
+
+    Parameters
+    ----------
+    %(in_file)s
+    %(out_file)s
+    %(log_file)s
+    %(kwargs)s
+
+    Returns
+    -------
+    None
+    """
 
     with tempfile.TemporaryDirectory() as temp_dir:
 
@@ -129,6 +145,17 @@ def _combine(sppas_file: str | Path, pyannote_file: str | Path, out_file: str | 
 
 @fill_doc
 def _merge_rows(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Merge identical rows that are next to each other
+
+    Parameters
+    ----------
+    %(df)s
+
+    Returns
+    -------
+    %(df)s
+    """
 
     if not len(df):
         return df
