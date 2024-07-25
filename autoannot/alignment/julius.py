@@ -23,13 +23,13 @@ LANG = "fra"
 
 
 @fill_doc
-def palign(in_file: str | Path, out_file: str | Path, trs_file: str | Path) -> None:
+def palign(wav_file: str | Path, out_file: str | Path, trs_file: str | Path) -> None:
     """
-    Phoneme level alignment in Julius
+    Perform SPPAS + Julius forced alignment on the transcription file and the WAV file
 
     Parameters
     ----------
-    %(in_file)s
+    %(wav_file)s
     %(out_file)s
     %(trs_file)s
 
@@ -60,7 +60,7 @@ def palign(in_file: str | Path, out_file: str | Path, trs_file: str | Path) -> N
     annotator = sppasAlign(log=None)
     annotator.load_resources(str(MODEL_PATH))
 
-    annotator.run([str(tmp_dir / phon_file), str(in_file), str(tmp_dir / token_file)], str(out_file))
+    annotator.run([str(tmp_dir / phon_file), str(wav_file), str(tmp_dir / token_file)], str(out_file))
 
     tmp.cleanup()
 
@@ -72,7 +72,7 @@ def palign(in_file: str | Path, out_file: str | Path, trs_file: str | Path) -> N
 @fill_doc
 def _sppas_normalize(in_file: str | Path, out_file: str | Path) -> None:
     """
-    Text normalization with SPPAS
+    Text normalization with SPPAS on the transcription file
 
     Parameters
     ----------
@@ -92,7 +92,7 @@ def _sppas_normalize(in_file: str | Path, out_file: str | Path) -> None:
 @fill_doc
 def _sppas_phonetize(in_file: str | Path, out_file: str | Path) -> None:
     """
-    Phonetization with SPPAS
+    Phonetization with SPPAS on the transcription file
 
     Parameters
     ----------
