@@ -23,7 +23,8 @@ def get_log_dir() -> Path:
 
 def setup_logging(name: str) -> logging.Logger:
     """
-    Get the logger
+    Get the configured logger with format:
+
     Parameters
     ----------
     name : str
