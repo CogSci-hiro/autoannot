@@ -5,6 +5,7 @@ import sys
 import pandas as pd
 
 from autoannot.constants import ROOT_DIR
+from autoannot.docs import fill_doc
 from . import MIN_SIL, MIN_IPU, SHIFT_START, SHIFT_END, MIN_MEAN_DURATION, MIN_N_IPUS
 
 # Add SPPAS path
@@ -13,11 +14,32 @@ sys.path.append(str(ROOT_DIR / "libs" / "SPPAS"))
 from sppas.src.annotations import sppasSearchIPUs  # noqa
 
 
+@fill_doc
 def diarize_sppas(in_file: str | Path, out_file: str | Path, error_log: str | Path,
                   min_sil: None | float = None, min_ipu: None | float = None,
                   shift_start: None | float = None, shift_end: None | float = None,
-                  min_n_ipus: None | int = None, min_mean_duration: None | int = None,
-                  rms: None | int = None, manual_thresholds: None | str | Path = None) -> None:
+                  min_n_ipus: None | int = None, min_mean_duration: None | float = None,
+                  rms: None | float = None, manual_thresholds: None | str | Path = None) -> None:
+    """
+
+    Parameters
+    ----------
+    %(in_file)s
+    %(out_file)s
+    %(error_log)s
+    %(min_sil)s
+    %(min_ipu)s
+    %(shift_start)s
+    %(shift_end)s
+    %(min_n_ipus)s
+    %(min_mean_duration)s
+    %(rms)s
+    %(manual_thresholds)s
+
+    Returns
+    -------
+    None
+    """
 
     # Make the SPPAS annotator object
     annotator = sppasSearchIPUs(log=None)
