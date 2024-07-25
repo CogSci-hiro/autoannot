@@ -11,10 +11,26 @@ from pyannote.audio import Pipeline
 
 from . import PYANNOT_MODEL
 from autoannot.utils.annotations import fill_missing
+from autoannot.docs import fill_doc
 
 
+@fill_doc
 def diarize_pyannote(in_file: str | Path, out_file: str | Path,  max_speakers: None | int,
                      auth_token: str, use_cuda: bool = True) -> None:
+    """
+
+    Parameters
+    ----------
+    %(in_file)s
+    %(out_file)s
+    %(max_speakers)s
+    %(auth_token)s
+    %(use_cuda)s
+
+    Returns
+    -------
+    None
+    """
 
     # Load pretrained model
     pipeline = Pipeline.from_pretrained(checkpoint_path=PYANNOT_MODEL, use_auth_token=auth_token)
@@ -34,10 +50,28 @@ def diarize_pyannote(in_file: str | Path, out_file: str | Path,  max_speakers: N
     dia_df.to_csv(out_file, index=False, quoting=csv.QUOTE_NONNUMERIC)
 
 
+@fill_doc
 def get_main_speaker(diarization_file: str | Path, wav_file: str | Path,
                      intensity_threshold_upper: float = 0.8, intensity_threshold_lower: float = 0.5,
                      duration_threshold_upper: float = 0.3,
                      duration_threshold_lower: float = 0.2) -> Tuple[str, str, bool]:
+    """
+
+    Parameters
+    ----------
+    %(diarization_file)s
+    %(wav_file)s
+    %(intensity_threshold_upper)s
+    %(intensity_threshold_lower)s
+    %(duration_threshold_upper)s
+    %(duration_threshold_lower)s
+
+    Returns
+    -------
+    %(main_speaker)s
+    %(candidates)s
+    %(loud_and_short)s
+    """
 
     # Columns are `speaker`, `intensity` (average) `duration` (total)
     result_df = _get_df(diarization_file, wav_file)
@@ -74,7 +108,19 @@ def get_main_speaker(diarization_file: str | Path, wav_file: str | Path,
 ########################################################################################################################
 
 
-def _convert_to_df(diarization: str, tier_name: str = "pyannote"):
+@fill_doc
+def _convert_to_df(diarization: str, tier_name: str = "pyannote") -> pd.DataFrame:
+    """
+
+    Parameters
+    ----------
+    %(diarization)s
+    %(tier_name)s
+
+    Returns
+    -------
+    %(df)s
+    """
 
     results = {"tier": [], "start": [], "end": [], "annotation": []}
 
@@ -111,7 +157,19 @@ def _convert_to_df(diarization: str, tier_name: str = "pyannote"):
     return results
 
 
+@fill_doc
 def _get_df(diarization_file: str | Path, wav_file: str | Path) -> pd.DataFrame:
+    """
+
+    Parameters
+    ----------
+    %(diarization_file)s
+    %(wav_file)s
+
+    Returns
+    -------
+    %(df)s
+    """
 
     # Load data
     diarization_df = pd.read_csv(diarization_file)
@@ -152,7 +210,21 @@ def _get_df(diarization_file: str | Path, wav_file: str | Path) -> pd.DataFrame:
     return result_df
 
 
+@fill_doc
 def _get_intensity(start: float, end: float, wav_data: np.array, sample_rate: int) -> float:
+    """
+
+    Parameters
+    ----------
+    %(start)s
+    %(end)s
+    %(wav_data)s
+    %(sample_rate)s
+
+    Returns
+    -------
+    %(intensity)s
+    """
 
     start_idx = int(start * sample_rate)
     end_idx = int(end * sample_rate)
