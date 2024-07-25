@@ -1,5 +1,6 @@
 from pathlib import Path
 import tempfile
+from typing import Tuple
 import warnings
 
 import numpy as np
@@ -9,12 +10,29 @@ import torch
 import whisper
 import whisper_timestamped
 
+from autoannot.docs import fill_doc
+
 # UserWarning: FP16 is not supported on CPU; using FP32 instead
 warnings.filterwarnings(action="ignore", category=UserWarning)
 
 
+@fill_doc
 def transcribe_whisper(in_file: str | Path, dia_file: str | Path,
-                       model: str, use_cuda: bool, condition_on_previous_text: bool = True) -> pd.DataFrame:
+                       model: str, use_cuda: bool, condition_on_previous_text: bool = False) -> pd.DataFrame:
+    """
+
+    Parameters
+    ----------
+    %(in_file)s
+    %(dia_file)s
+    %(model)s
+    %(use_cuda)s
+    condition_on_previous_text
+
+    Returns
+    -------
+    %(df)s
+    """
 
     # Make cropped audio file
     temp_audio, ipu_df, dia_df = _make_cropped(in_file, dia_file)
@@ -43,7 +61,22 @@ def transcribe_whisper(in_file: str | Path, dia_file: str | Path,
     return results
 
 
-def _make_cropped(audio_file, dia_file):
+@fill_doc
+def _make_cropped(audio_file: str | Path,
+                  dia_file: str | Path) -> Tuple[tempfile.NamedTemporaryFile, pd.DataFrame, pd.DataFrame]:
+    """
+
+    Parameters
+    ----------
+    %(audio_file)s
+    %(dia_file)s
+
+    Returns
+    -------
+    %(temp_file)s
+    %(ipu_df)s
+    %(df)s
+    """
 
     # Read files
     sr, data = wavfile.read(audio_file)
@@ -83,7 +116,22 @@ def _make_cropped(audio_file, dia_file):
     return temp_file, ipu_df, df
 
 
-def _convert_to_dataframe(transcription, ipu_df, dia_df, partial_overlap: str = "ignore"):
+@fill_doc
+def _convert_to_dataframe(transcription, ipu_df: pd.DataFrame, dia_df: pd.DataFrame,
+                          partial_overlap: str = "ignore") -> pd.DataFrame:
+    """
+
+    Parameters
+    ----------
+    %(transcription)s
+    %(ipu_df)s
+    %(dia_df)s
+    %(partial_overlap)s
+
+    Returns
+    -------
+    %(df)s
+    """
 
     # Assign IPU index to each word
     annotation = {"annotation": [], "index": []}
@@ -91,8 +139,8 @@ def _convert_to_dataframe(transcription, ipu_df, dia_df, partial_overlap: str = 
 
         for word in segment["words"]:
 
-            start = _get_index(word["start"], ipu_df)
-            end = _get_index(word["end"], ipu_df)
+            start = _get_index(word["start"], ipu_df, start=True)
+            end = _get_index(word["end"], ipu_df, start=False)
 
             # Start and end are not in the same interval
             if start != end:
@@ -138,7 +186,20 @@ def _convert_to_dataframe(transcription, ipu_df, dia_df, partial_overlap: str = 
     return df
 
 
-def _get_index(timestamp, df):
+@fill_doc
+def _get_index(timestamp: float, df: pd.DataFrame, start: bool) -> int:
+    """
+
+    Parameters
+    ----------
+    %(timestamp)s
+    %(df)s
+    %(start)s
+
+    Returns
+    -------
+    %(index)s
+    """
 
     # Beyond the last timestamp
     last_timestamp = df["end"].values[-1]
@@ -151,7 +212,13 @@ def _get_index(timestamp, df):
     if len(df) == 0:
         raise ValueError(f"timestamp '{timestamp}' was not found anywhere in the IPU dataframe")
 
-    elif len(df) > 1:
+    elif len(df) == 2:
+        if start:
+            return df["index"].values[1]
+        else:
+            return df["index"].values[0]
+
+    elif len(df) > 2:
         raise ValueError(f"timestamp '{timestamp}' is in multiple IPUs")
 
     return df["index"].values[-1]
