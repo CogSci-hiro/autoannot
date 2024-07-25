@@ -12,7 +12,7 @@ from autoannot import diarize, transcribe, align, get_wav_paths, get_path_list
 def annotate(params: Dict):
 
     # Parameters
-    n_jobs = params["n_jobs"]
+    # n_jobs = params["n_jobs"]
     use_existing = params["use_existing"]
     target = params["target"]
 
