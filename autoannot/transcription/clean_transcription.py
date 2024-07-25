@@ -7,6 +7,18 @@ from autoannot.docs import fill_doc
 
 @fill_doc
 def clean_transcription(df: pd.DataFrame, empty: str = "noise") -> pd.DataFrame:
+    """
+    Remove unwanted symbols
+
+    Parameters
+    ----------
+    %(df)s
+    %(empty)s
+
+    Returns
+    -------
+    %(df)s
+    """
 
     results = {"tier": [], "start": [], "end": [], "annotation": []}
     for _, row in df.iterrows():
@@ -57,7 +69,7 @@ def clean_transcription(df: pd.DataFrame, empty: str = "noise") -> pd.DataFrame:
 @fill_doc
 def _remove_subtitles(text: str) -> str:
     """
-
+    Remove subtitle website URLs e.g. ``\".com\"``, ``\".org\"``, ``\"sous-titrage\"`` or ``\"par SousTitreur.com\"``
     Parameters
     ----------
     %(text)s
@@ -77,6 +89,7 @@ def _remove_subtitles(text: str) -> str:
 @fill_doc
 def _normalize_spaces(text: str) -> str:
     """
+    Normalize spaces by replacing multiple spaces with a single space
 
     Parameters
     ----------
@@ -95,6 +108,7 @@ def _normalize_spaces(text: str) -> str:
 @fill_doc
 def _remove_miscellaneous(text: str) -> str:
     """
+    Other cleaning
 
     Parameters
     ----------
@@ -113,6 +127,7 @@ def _remove_miscellaneous(text: str) -> str:
 @fill_doc
 def _normalize_currencies(text: str) -> str:
     """
+    Normalize currencies
 
     Parameters
     ----------
@@ -128,6 +143,7 @@ def _normalize_currencies(text: str) -> str:
 @fill_doc
 def _normalize_roman(text: str) -> str:
     """
+    Normalize Roman numerals
 
     Parameters
     ----------
@@ -143,6 +159,7 @@ def _normalize_roman(text: str) -> str:
 @fill_doc
 def _normalize_ligatures(text: str) -> str:
     """
+    Normalize ligatures
 
     Parameters
     ----------
@@ -165,6 +182,7 @@ def _normalize_ligatures(text: str) -> str:
 @fill_doc
 def _normalize_ordinals(text: str) -> str:
     """
+    Normalize ordinals
 
     Parameters
     ----------
@@ -180,6 +198,7 @@ def _normalize_ordinals(text: str) -> str:
 @fill_doc
 def _normalize_cardinals(text: str) -> str:
     """
+    Normalize cardinals
 
     Parameters
     ----------
@@ -195,6 +214,7 @@ def _normalize_cardinals(text: str) -> str:
 @fill_doc
 def _normalize_symbols(text: str) -> str:
     """
+    Normalize symbols
 
     Parameters
     ----------
@@ -210,6 +230,7 @@ def _normalize_symbols(text: str) -> str:
 @fill_doc
 def _normalize_dashes(text: str) -> str:
     """
+    Normalize dashes
 
     Parameters
     ----------
