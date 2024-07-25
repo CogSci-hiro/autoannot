@@ -6,8 +6,10 @@ import pandas as pd
 from pyannote.audio import Pipeline
 
 from ..diarization import PYANNOT_MODEL
+from autoannot.docs import fill_doc
 
 
+@fill_doc
 def fill_missing(df: pd.DataFrame, target: None | str,
                  fill_symbol: str = "#", min_duration: float = 0.01) -> pd.DataFrame:
 
@@ -43,7 +45,18 @@ def fill_missing(df: pd.DataFrame, target: None | str,
     return pd.DataFrame(result)
 
 
-def check_parameters(params: Dict):
+@fill_doc
+def check_parameters(params: Dict) -> None:
+    """
+
+    Parameters
+    ----------
+    %(params)s
+
+    Returns
+    -------
+    None
+    """
 
     _check_keys(params, ["target", "paths", "diarization", "transcription", "alignment", "advanced"])
 
@@ -70,6 +83,9 @@ def check_parameters(params: Dict):
     _check_transcription(params["transcription"])
     _check_alignment(params["alignment"])
     _check_advanced(params["advanced"])
+
+
+########################################################################################################################
 
 
 def _check_keys(params, keys):
