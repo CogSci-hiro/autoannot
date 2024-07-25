@@ -9,8 +9,10 @@ def get_log_dir() -> Path:
     """
     Get path to the directory where logs are saved
 
-    :returns: path to the logging directory
-    :rtype: Path
+    Returns
+    -------
+    log_dir : Path
+        path to the logging directory
     """
 
     path = Path(ROOT_DIR).parent / "data" / "logs"  # /summ_re/logger.py
@@ -22,11 +24,14 @@ def get_log_dir() -> Path:
 def setup_logging(name: str) -> logging.Logger:
     """
     Get the logger
-
-    :param name: name of the log file
-    :type name: str
-    :returns: logger
-    :rtype: logging.Logger
+    Parameters
+    ----------
+    name : str
+        name of the log file
+    Returns
+    -------
+    logger : logging.Logger
+        logger
     """
 
     logger = logging.getLogger(name)
