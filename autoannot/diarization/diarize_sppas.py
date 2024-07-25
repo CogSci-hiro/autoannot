@@ -26,15 +26,23 @@ def diarize_sppas(in_file: str | Path, out_file: str | Path, error_log: str | Pa
     ----------
     %(in_file)s
     %(out_file)s
-    %(error_log)s
-    %(min_sil)s
-    %(min_ipu)s
-    %(shift_start)s
-    %(shift_end)s
-    %(min_n_ipus)s
+    error_log : str | Path
+        Path to SPPAS error log file
+    min_sil : None | float
+        Minimum silence duration
+    min_ipu : None | float
+        Minimum IPU duration
+    shift_start : None | float
+        Shift start
+    shift_end : None | float
+        Shift end
+    min_n_ipus : None | float
+        Minimum number of IPUs
     %(min_mean_duration)s
-    %(rms)s
-    %(manual_thresholds)s
+    rms : None | float
+        RMS
+    manual_thresholds : None | str | Path
+        Path to file containing manual threshold if None, it is ignored
 
     Returns
     -------
