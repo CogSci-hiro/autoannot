@@ -92,7 +92,8 @@ def _sppas_normalize(in_file: str | Path, out_file: str | Path) -> None:
 @fill_doc
 def _sppas_phonetize(in_file: str | Path, out_file: str | Path) -> None:
     """
-    TODO
+    Phonetization with SPPAS
+
     Parameters
     ----------
     %(in_file)s
