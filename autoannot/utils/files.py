@@ -8,6 +8,7 @@ from typing import List
 import pandas as pd
 
 from autoannot.constants import ROOT_DIR
+from autoannot.docs import fill_doc
 
 # Add SPPAS path
 sys.path.append(str(ROOT_DIR / "libs" / "SPPAS"))
@@ -15,6 +16,7 @@ sys.path.append(str(ROOT_DIR / "libs" / "SPPAS"))
 from sppas.src.anndata import sppasTrsRW  # noqa
 
 
+@fill_doc
 def get_wav_paths(dir_name: str | Path) -> List[Path]:
 
     path_list = []
@@ -39,6 +41,7 @@ def get_wav_paths(dir_name: str | Path) -> List[Path]:
     return path_list
 
 
+@fill_doc
 def get_path_list(dst_dir: Path, wav_list: List[Path], extension: str,
                   prefix: None | str = None, suffix: None | str = None):
 
@@ -58,15 +61,17 @@ def get_path_list(dst_dir: Path, wav_list: List[Path], extension: str,
     return path_list
 
 
+@fill_doc
 def convert_annotation(in_file: str | Path, out_file: str | Path) -> None:
 
-    # SPPAS conversion
-    parser = sppasTrsRW(str(in_file))
-    trs = parser.read()
-    parser.set_filename(str(out_file))
-    parser.write(trs)
+        # SPPAS conversion
+        parser = sppasTrsRW(str(in_file))
+        trs = parser.read()
+        parser.set_filename(str(out_file))
+        parser.write(trs)
 
 
+@fill_doc
 def to_textgrid(out_file: str | Path, df: pd.DataFrame) -> None:
 
     with tempfile.TemporaryDirectory() as temp_dir:
