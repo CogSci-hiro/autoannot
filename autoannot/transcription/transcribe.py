@@ -10,6 +10,7 @@ from autoannot.docs import fill_doc
 @fill_doc
 def transcribe(in_file: str | Path, out_file: str | Path, dia_file: str | Path, params: Dict) -> None:
     """
+    Transcribe with Transformers
 
     Parameters
     ----------
