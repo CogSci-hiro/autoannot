@@ -14,7 +14,11 @@ from autoannot.docs import fill_doc
 @fill_doc
 def diarize(in_file: str | Path, out_file: str | Path, log_file: None | str | Path, params: Dict) -> None:
     """
-    Perform diarization on ``in_file``
+    Perform diarization on ``in_file``. There are three possible backends:
+
+    ``\"sppas\"``: Perform SPPAS IPU annotation (see https://sppas.org/workdemo.html)
+    ``\"pyannot\"``: Perform diarization with Pyannote (see https://github.com/pyannote/pyannote-audio)
+    ``\"combined\"``: Perform diarization using both SPPAS and Pyannote and combine the two afterwards
 
     Parameters
     ----------
@@ -50,7 +54,7 @@ def diarize(in_file: str | Path, out_file: str | Path, log_file: None | str | Pa
 @fill_doc
 def _diarize_combined(in_file: str | Path, out_file: str | Path, log_file: str | Path, **kwargs: dict) -> None:
     """
-    Perform diarization combining SPPAS and Pyannote diariation
+    Perform diarization combining SPPAS and Pyannote diarization
 
     Parameters
     ----------
