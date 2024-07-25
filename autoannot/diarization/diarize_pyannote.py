@@ -18,13 +18,16 @@ from autoannot.docs import fill_doc
 def diarize_pyannote(in_file: str | Path, out_file: str | Path,  max_speakers: None | int,
                      auth_token: str, use_cuda: bool = True) -> None:
     """
+    Perform diarization using Pyannote
 
     Parameters
     ----------
     %(in_file)s
     %(out_file)s
-    %(max_speakers)s
-    %(auth_token)s
+    max_speakers) : None | int
+        Maximum number of speakers in the file, if is unknown ``None`` is specified
+    auth_token) : str
+        Authentication token for HuggingFace
     %(use_cuda)s
 
     Returns
@@ -56,21 +59,29 @@ def get_main_speaker(diarization_file: str | Path, wav_file: str | Path,
                      duration_threshold_upper: float = 0.3,
                      duration_threshold_lower: float = 0.2) -> Tuple[str, str, bool]:
     """
+    Estimate which speaker is the main speaker of the file
 
     Parameters
     ----------
     %(diarization_file)s
     %(wav_file)s
-    %(intensity_threshold_upper)s
-    %(intensity_threshold_lower)s
-    %(duration_threshold_upper)s
-    %(duration_threshold_lower)s
+    intensity_threshold_upper : float
+        Upper threshold for intensity
+    intensity_threshold_lower : float
+        Lower threshold for intensity
+    duration_threshold_upper : float
+        Upper threshold for duration
+    duration_threshold_lower : float
+        Lower threshold for duration
 
     Returns
     -------
-    %(main_speaker)s
-    %(candidates)s
-    %(loud_and_short)s
+    main_speaker : str
+        Main speaker
+    candidates : str
+        Main speaker candidates
+    loud_and_short : bool
+        Loud and short
     """
 
     # Columns are `speaker`, `intensity` (average) `duration` (total)
@@ -111,6 +122,7 @@ def get_main_speaker(diarization_file: str | Path, wav_file: str | Path,
 @fill_doc
 def _convert_to_df(diarization: str, tier_name: str = "pyannote") -> pd.DataFrame:
     """
+    Convert Pyannote output to DataFrame format
 
     Parameters
     ----------
@@ -211,7 +223,7 @@ def _get_df(diarization_file: str | Path, wav_file: str | Path) -> pd.DataFrame:
 
 
 @fill_doc
-def _get_intensity(start: float, end: float, wav_data: np.array, sample_rate: int) -> float:
+def _get_intensity(start: float, end: float, wav_data: np.ndarray, sample_rate: int) -> float:
     """
 
     Parameters
