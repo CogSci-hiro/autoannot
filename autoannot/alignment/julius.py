@@ -5,6 +5,7 @@ import sys
 import tempfile
 
 from autoannot.constants import ROOT_DIR
+from autoannot.docs import fill_doc
 
 # Add SPPAS path
 sys.path.append(str(ROOT_DIR / "libs" / "SPPAS"))
@@ -21,7 +22,21 @@ MODEL_PATH = RESOURCE_PATH / "models" / "models-fra"
 LANG = "fra"
 
 
+@fill_doc
 def palign(in_file: str | Path, out_file: str | Path, trs_file: str | Path) -> None:
+    """
+    Phoneme level alignment in Julius
+
+    Parameters
+    ----------
+    %(in_file)s
+    %(out_file)s
+    %(trs_file)s
+
+    Returns
+    -------
+    None
+    """
 
     tmp = tempfile.TemporaryDirectory()
     tmp_dir = Path(tmp.name)
@@ -54,14 +69,39 @@ def palign(in_file: str | Path, out_file: str | Path, trs_file: str | Path) -> N
 ########################################################################################################################
 
 
-def _sppas_normalize(in_file: str | Path, out_file: str | Path):
+@fill_doc
+def _sppas_normalize(in_file: str | Path, out_file: str | Path) -> None:
+    """
+    Text normalization with SPPAS
+
+    Parameters
+    ----------
+    %(in_file)s
+    %(out_file)s
+
+    Returns
+    -------
+    None
+    """
 
     text_norm = sppasTextNorm(log=None)
     text_norm.load_resources(str(VOCAB_PATH), lang=LANG)
     text_norm.run([in_file], output=out_file)
 
 
-def _sppas_phonetize(in_file: str | Path, out_file: str | Path):
+@fill_doc
+def _sppas_phonetize(in_file: str | Path, out_file: str | Path) -> None:
+    """
+    TODO
+    Parameters
+    ----------
+    %(in_file)s
+    %(out_file)s
+
+    Returns
+    -------
+    None
+    """
 
     phon = sppasPhon(log=None)
     phon.load_resources(str(DICT_PATH))
