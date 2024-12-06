@@ -96,6 +96,15 @@ The toolkit was tested on:
 
 * MacOS Sonoma 14.4.1
 
+## Known issues
+
+* The pipeline has the tendency to omit the first token in an IPU
+* Due to 'gluing' process (see [paper](http://www.asru2023.org/)) sometimes the beginning of an IPU can end up in the preceding IPU
+* Shorter utterances (often backchannels such as 'yes', 'ok' etc.) tend not to be recognised
+* quick repetitions ('yes yes yes') tend to be recognised as a single utterance ('yes')
+* word final consonants tend not to be included in the IPU
+
+
 ## Citations
 
 Detailed evaluation of various techniques used in `AutoAnnot` can be found here:
